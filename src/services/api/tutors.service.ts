@@ -1,5 +1,5 @@
 import { http } from "./http";
-import type { PageResponse, TutorListItemResponse, TutorStatsResponse } from "./types";
+import type { PageResponse, TutorListItemResponse, TutorResponse, TutorStatsResponse } from "./types";
 
 export async function listTutors(params?: {
   page?: number;
@@ -17,5 +17,10 @@ export async function listTutors(params?: {
 
 export async function getTutorStats(): Promise<TutorStatsResponse> {
   const { data } = await http.get<TutorStatsResponse>("/api/tutors/stats");
+  return data;
+}
+
+export async function getTutorById(id: number): Promise<TutorResponse> {
+  const { data } = await http.get<TutorResponse>(`/api/tutors/${id}`);
   return data;
 }

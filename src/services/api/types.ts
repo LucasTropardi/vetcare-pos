@@ -195,6 +195,17 @@ export type TutorListItemResponse = {
   active: boolean;
 };
 
+export type TutorResponse = {
+  id: number;
+  name: string;
+  document?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  active: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type TutorStatsResponse = {
   total: number;
   active: number;
@@ -210,6 +221,8 @@ export type ProductListItemResponse = {
   name: string;
   active: boolean;
 };
+
+export type ItemType = "PRODUCT" | "SERVICE";
 
 export type StockMovementType = "ENTRY_PURCHASE" | "EXIT_SALE" | "EXIT_VISIT_CONSUMPTION" | "ADJUSTMENT";
 
@@ -244,4 +257,271 @@ export type CreateStockMovementRequest = {
   notes?: string;
   referenceType?: string;
   referenceId?: number;
+};
+
+export type CompanyProfileResponse = {
+  id: number;
+  legalName: string;
+  tradeName?: string | null;
+  cnpj?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  headquarter: boolean;
+  parentCompanyId?: number | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type CashRegisterStatus = "OPEN" | "CLOSED" | "CANCELED";
+
+export type CashRegisterResponse = {
+  id: number;
+  companyId: number;
+  registerCode: string;
+  status: CashRegisterStatus;
+  openingAmount: number;
+  expectedClosingAmount: number;
+  closingAmount?: number | null;
+  openedBy: number;
+  openedAt: string;
+  closedBy?: number | null;
+  closedAt?: string | null;
+  notes?: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type OpenCashRegisterRequest = {
+  companyId: number;
+  registerCode: string;
+  openingAmount: number;
+  expectedClosingAmount?: number;
+  notes?: string;
+};
+
+export type ProductPosLookupResponse = {
+  id: number;
+  sku: string;
+  name: string;
+  unit: string;
+  itemType: ItemType;
+  active: boolean;
+  salePrice: number;
+  gtinEan?: string | null;
+  gtinEanTrib?: string | null;
+};
+
+export type ProductResponse = {
+  id: number;
+  sku: string;
+  name: string;
+  itemType: ItemType;
+  category: string;
+  unit: string;
+  active: boolean;
+  salePrice: number;
+  costPrice: number;
+  minStock: number;
+  fiscal?: {
+    ncm?: string | null;
+    cest?: string | null;
+    origin?: string | null;
+    gtinEan?: string | null;
+    gtinEanTrib?: string | null;
+    unitTrib?: string | null;
+    tribFactor?: number | null;
+    cbenef?: string | null;
+    serviceListCode?: string | null;
+  } | null;
+};
+
+export type SaleStatus = "DRAFT" | "CONFIRMED" | "CANCELED";
+
+export type SaleItemResponse = {
+  id: number;
+  productId: number;
+  itemType: ItemType;
+  description: string;
+  unit: string;
+  quantity: number;
+  unitPrice: number;
+  total: number;
+  createdAt: string;
+};
+
+export type SalePaymentResponse = {
+  id: number;
+  method: "PIX" | "CARD" | "CASH" | "OTHER";
+  status: "PENDING" | "PAID" | "CANCELED" | "REFUNDED";
+  amount: number;
+  paidAt?: string | null;
+  createdBy?: number | null;
+  createdAt: string;
+  notes?: string | null;
+};
+
+export type SaleResponse = {
+  id: number;
+  companyId: number;
+  tutorId?: number | null;
+  customerCompanyId?: number | null;
+  appointmentId?: number | null;
+  status: SaleStatus;
+  subtotal: number;
+  discount: number;
+  total: number;
+  paidTotal: number;
+  remaining: number;
+  notes?: string | null;
+  createdBy?: number | null;
+  confirmedBy?: number | null;
+  confirmedAt?: string | null;
+  canceledBy?: number | null;
+  canceledAt?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  items: SaleItemResponse[];
+  payments: SalePaymentResponse[];
+};
+
+export type SaleListItemResponse = {
+  id: number;
+  companyId: number;
+  tutorId?: number | null;
+  customerCompanyId?: number | null;
+  appointmentId?: number | null;
+  status: SaleStatus;
+  subtotal: number;
+  discount: number;
+  total: number;
+  paidTotal: number;
+  remaining: number;
+  notes?: string | null;
+  createdBy?: number | null;
+  confirmedBy?: number | null;
+  confirmedAt?: string | null;
+  canceledBy?: number | null;
+  canceledAt?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  itemCount?: number | null;
+  customerName?: string | null;
+  customerDocument?: string | null;
+  registerCode?: string | null;
+  saleNumber?: number | null;
+  documentNumber?: string | null;
+  protocol?: string | null;
+  canCancel?: boolean | null;
+  xmlAvailable?: boolean | null;
+  receiptAvailable?: boolean | null;
+};
+
+export type CreateSaleRequest = {
+  companyId: number;
+  cashRegisterId: number;
+  tutorId?: number;
+  customerCompanyId?: number;
+  appointmentId?: number;
+  notes?: string;
+};
+
+export type AddSaleItemRequest = {
+  productId: number;
+  quantity: number;
+  unitPrice?: number;
+};
+
+export type UpdateSaleRequest = {
+  tutorId?: number;
+  customerCompanyId?: number;
+  clearRecipient?: boolean;
+  notes?: string;
+};
+
+export type CheckoutPaymentRequest = {
+  method: "PIX" | "CARD" | "CASH" | "OTHER";
+  amount: number;
+  notes?: string;
+};
+
+export type FinalizeSaleRequest = {
+  tutorId?: number;
+  customerCompanyId?: number;
+  clearRecipient?: boolean;
+  notes?: string;
+  payments: CheckoutPaymentRequest[];
+};
+
+export type SaleReceiptCompanyResponse = {
+  id: number;
+  displayName: string;
+  legalName: string;
+  cnpj?: string | null;
+  phone?: string | null;
+};
+
+export type SaleReceiptCustomerResponse = {
+  identified: boolean;
+  name: string;
+  document?: string | null;
+};
+
+export type SaleReceiptItemResponse = {
+  id: number;
+  lineNumber: number;
+  productId: number;
+  itemType: ItemType;
+  description: string;
+  unit: string;
+  ncm?: string | null;
+  cfop?: string | null;
+  quantity: number;
+  unitPrice: number;
+  total: number;
+  estimatedTax: number;
+};
+
+export type SaleReceiptTaxBreakdownResponse = {
+  federal: number;
+  state: number;
+  municipal: number;
+  total: number;
+};
+
+export type SaleReceiptPaymentResponse = {
+  id: number;
+  method: "PIX" | "CARD" | "CASH" | "OTHER";
+  status: "PENDING" | "PAID" | "CANCELED" | "REFUNDED";
+  amount: number;
+  notes?: string | null;
+  paidAt?: string | null;
+};
+
+export type SaleReceiptResponse = {
+  saleId: number;
+  saleNumber: number;
+  registerCode: string;
+  environment: string;
+  notice: string;
+  documentLabel: string;
+  documentNumber: string;
+  series: string;
+  accessKey: string;
+  protocol: string;
+  issuedAt: string;
+  company: SaleReceiptCompanyResponse;
+  customer: SaleReceiptCustomerResponse;
+  items: SaleReceiptItemResponse[];
+  payments: SaleReceiptPaymentResponse[];
+  subtotal: number;
+  discount: number;
+  total: number;
+  estimatedTaxes: SaleReceiptTaxBreakdownResponse;
+  receivedTotal: number;
+  change: number;
+};
+
+export type FinalizeSaleResponse = {
+  sale: SaleResponse;
+  receipt: SaleReceiptResponse;
 };
